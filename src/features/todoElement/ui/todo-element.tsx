@@ -5,9 +5,8 @@ import { useDispatch } from "react-redux";
 import { deleteTodo, updateTodo } from "@app/store/slices/todo-lists-slice.tsx";
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { ITodoElement } from "@features/todoElement/model/types.ts";
+import { TodosService } from "@shared/api/todos.service.ts";
 import { Button, Input } from "@shared/ui";
-import { deleteTodoFromList } from "@shared/utils/delete-todo.ts";
-import { updateTodoInList } from "@shared/utils/update-todo.ts";
 
 export const TodoElement = ({
 	completed,
@@ -56,7 +55,7 @@ export const TodoElement = ({
 
 	const handleDeleteTask = () => {
 		dispatch(deleteTodo(id || ""));
-		deleteTodoFromList(listId || "", id || "");
+		TodosService.deleteTodo(listId || "", id || "");
 		handleCloseModal();
 	};
 
@@ -66,7 +65,7 @@ export const TodoElement = ({
 		completed: boolean;
 	}) => {
 		dispatch(updateTodo({ id, listId, ...data }));
-		updateTodoInList(listId || "", id || "", data);
+		TodosService.updateTodo(listId || "", id || "", data);
 		handleCloseModal();
 	};
 
@@ -74,7 +73,7 @@ export const TodoElement = ({
 		dispatch(
 			updateTodo({ id, listId, title, description, completed: !completed })
 		);
-		updateTodoInList(listId || "", id || "", {
+		TodosService.updateTodo(listId || "", id || "", {
 			title,
 			description,
 			completed: !completed,

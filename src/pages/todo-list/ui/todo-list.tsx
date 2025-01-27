@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 
 import { setList, setLoading } from "@app/store/slices/todo-lists-slice.tsx";
 import { RootState } from "@app/store/store.ts";
+import { TodosService } from "@shared/api/todos.service.ts";
 import { Loader } from "@shared/ui";
-import { getTodoListWithTodos } from "@shared/utils/get-todo-lists-by-id.ts";
 import { TodosList } from "@widgets/todos-list/ui/todos-list.tsx";
 
 export const TodoList = () => {
@@ -20,7 +20,7 @@ export const TodoList = () => {
 		const fetchTodoLists = async () => {
 			try {
 				dispatch(setLoading(true));
-				const lists = await getTodoListWithTodos(id?.toString() || "");
+				const lists = await TodosService.getTodoList(id?.toString() || "");
 				dispatch(setList(lists.todos));
 				dispatch(setLoading(false));
 			} catch (err) {

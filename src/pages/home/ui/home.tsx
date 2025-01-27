@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { TodosService } from "@shared/api/todos.service.ts";
 import { Button, Input } from "@shared/ui";
-import { deleteTodoList } from "@shared/utils/delete-todo-list.ts";
-import { getTodoLists } from "@shared/utils/get-todo-lists.ts";
 
 type NewListInputs = {
 	title: string;
@@ -43,7 +41,7 @@ export const Home = () => {
 	};
 
 	const handleDeleteList = (id: string) => {
-		deleteTodoList(id);
+		TodosService.deleteTodoList(id);
 		setIsUpdate(!isUpdate);
 	};
 
@@ -55,7 +53,7 @@ export const Home = () => {
 	useEffect(() => {
 		const fetchTodoLists = async () => {
 			try {
-				const lists = await getTodoLists();
+				const lists = await TodosService.getAllTodoLists();
 				setTodoLists(lists);
 			} catch (err) {
 				console.error("Error fetching todo lists:", err);
