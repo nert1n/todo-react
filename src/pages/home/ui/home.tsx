@@ -35,6 +35,7 @@ export const Home = () => {
 
 	const handleCreateList = (title: string) => {
 		createTodoList(title);
+		setTodoLists(prevState => [...prevState]);
 		handleCloseModal();
 	};
 
@@ -52,7 +53,7 @@ export const Home = () => {
 			}
 		};
 		fetchTodoLists();
-	}, []);
+	}, [todoLists]);
 
 	return (
 		<div
@@ -62,7 +63,7 @@ export const Home = () => {
 			<h1 className={"flex justify-center text-3xl"}>List of all todo lists</h1>
 			<ul
 				className={
-					"flex flex-row justify-start mx-auto w-full max-w-[600px] bg-white h-full rounded-2xl p-4 gap-2"
+					"flex flex-row justify-start flex-wrap mx-auto w-full max-w-[600px] bg-white h-full rounded-2xl p-4 gap-2"
 				}>
 				{todoLists.map((list, id) => (
 					<Link

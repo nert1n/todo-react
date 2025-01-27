@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
+import { updateTodo } from "@app/store/slices/todo-lists-slice.tsx";
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { ITodoElement } from "@features/todoElement/model/types.ts";
 import { Button, Input } from "@shared/ui";
@@ -18,6 +20,8 @@ export const TodoElement = ({
 	const [isEditing, setIsEditing] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 
+	const dispatch = useDispatch();
+
 	const {
 		formState: { errors },
 		handleSubmit,
@@ -26,7 +30,7 @@ export const TodoElement = ({
 		defaultValues: {
 			title: title,
 			description: description,
-			completed: false,
+			completed: completed ?? false,
 		},
 	});
 
@@ -60,11 +64,15 @@ export const TodoElement = ({
 		description: string;
 		completed: boolean;
 	}) => {
+		dispatch(updateTodo({ id, listId, ...data }));
 		updateTodoInList(listId || "", id || "", data);
 		handleCloseModal();
 	};
 
 	const handleEditCheckbox = () => {
+		dispatch(
+			updateTodo({ id, listId, title, description, completed: !completed })
+		);
 		updateTodoInList(listId || "", id || "", {
 			title,
 			description,
@@ -73,18 +81,15 @@ export const TodoElement = ({
 	};
 
 	return (
-		<div
-			className={
-				"flex flex-row w-full justify-between gap-2 rounded-2xl bg-white shadow py-3 px-4"
-			}>
+		<div className="flex flex-row w-full justify-between gap-2 rounded-2xl bg-white shadow py-3 px-4">
 			{isDeleting && (
 				<Modal
 					isOpen={isModalOpen}
 					title={"Deleting"}
 					onClose={handleCloseModal}>
-					<div className={"flex flex-col gap-3"}>
+					<div className="flex flex-col gap-3">
 						<h3>Are you sure you want to delete the task?</h3>
-						<div className={"w-full flex flex-row gap-2 justify-center"}>
+						<div className="w-full flex flex-row gap-2 justify-center">
 							<Button onClick={handleCloseModal}>No</Button>
 							<Button onClick={handleDeleteTask}>Yes</Button>
 						</div>
@@ -98,7 +103,7 @@ export const TodoElement = ({
 					title={"Editing"}
 					onClose={handleCloseModal}>
 					<form
-						className={"flex flex-col gap-3"}
+						className="flex flex-col gap-3"
 						onSubmit={handleSubmit(handleEditTask)}>
 						<div>
 							<Input
@@ -121,9 +126,9 @@ export const TodoElement = ({
 									{errors.description.message}
 								</span>
 							)}
-							<div className={"flex items-center"}>
+							<div className="flex items-center">
 								<input type="checkbox" {...register("completed")} />
-								<span className={"ml-2"}>Completed</span>
+								<span className="ml-2">Completed</span>
 							</div>
 						</div>
 						<Button type="submit">Edit</Button>
@@ -131,22 +136,22 @@ export const TodoElement = ({
 				</Modal>
 			)}
 
-			<div className={"flex flex-col"}>
-				<h3 className={"text-base"}>{title}</h3>
-				<p className={"text-sm"}>{description}</p>
+			<div className="flex flex-col">
+				<h3 className="text-base">{title}</h3>
+				<p className="text-sm">{description}</p>
 			</div>
 
-			<div className={"flex flex-row gap-2"}>
-				<button className={"text-[#4186F4]"} onClick={handleOpenEditing}>
+			<div className="flex flex-row gap-2">
+				<button className="text-[#4186F4]" onClick={handleOpenEditing}>
 					edit
 				</button>
-				<button className={"text-[#F44141]"} onClick={handleOpenDeleting}>
+				<button className="text-[#F44141]" onClick={handleOpenDeleting}>
 					delete
 				</button>
 				<input
 					checked={completed}
 					type="checkbox"
-					onChange={() => handleEditCheckbox()}
+					onChange={handleEditCheckbox}
 				/>
 			</div>
 		</div>

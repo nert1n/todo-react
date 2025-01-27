@@ -1,7 +1,9 @@
 import { getAuth } from "firebase/auth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
+import { addTodo } from "@app/store/slices/todo-lists-slice.tsx";
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { TodoElement } from "@features/todoElement/ui/todo-element.tsx";
 import { Button, Input } from "@shared/ui";
@@ -23,6 +25,7 @@ export const TodosList = ({ id, list }: ITodosList) => {
 	} = useForm<NewTaskInputs>();
 	const auth = getAuth();
 	const currentUser = auth.currentUser;
+	const dispatch = useDispatch();
 
 	const handleOpenAddTaskModal = () => {
 		setIsAddModalOpen(true);
@@ -42,13 +45,18 @@ export const TodosList = ({ id, list }: ITodosList) => {
 		const createdBy = currentUser.uid;
 		const editedBy = createdBy;
 
-		addTodoToList(id, {
+		const newTask = {
 			title,
 			description,
 			createdBy,
 			editedBy,
 			completed: false,
-		});
+			listId: id,
+		};
+
+		addTodoToList(id, newTask);
+
+		dispatch(addTodo(newTask));
 
 		handleCloseAddModal();
 	};
@@ -59,7 +67,7 @@ export const TodosList = ({ id, list }: ITodosList) => {
 
 	return (
 		<div className="flex flex-col gap-2 w-full max-w-[600px] mx-auto">
-			{!!list && (
+			{!!list && list.length === 0 && (
 				<h1 className="w-full flex text-2xl justify-center">
 					Todo has not been created yet!
 				</h1>

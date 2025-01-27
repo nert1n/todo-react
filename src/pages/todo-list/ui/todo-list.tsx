@@ -1,32 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { ITodoElement } from "@features/todoElement/model/types.ts";
+import { setList, setLoading } from "@app/store/slices/todo-lists-slice.tsx";
+import { RootState } from "@app/store/store.ts";
 import { getTodoListWithTodos } from "@shared/utils/get-todo-lists-by-id.ts";
 import { TodosList } from "@widgets/todos-list/ui/todos-list.tsx";
 
 export const TodoList = () => {
 	const { id } = useParams<{ id: string }>();
-	const [todoList, setTodoList] = useState<ITodoElement[]>([]);
-	const [error, setError] = useState<string | null>(null);
+	const dispatch = useDispatch();
+
+	const { list, loading } = useSelector((state: RootState) => state.todoLists);
 
 	useEffect(() => {
 		const fetchTodoLists = async () => {
 			try {
+				dispatch(setLoading(true));
 				const lists = await getTodoListWithTodos(id?.toString() || "");
-				setTodoList(lists.todos);
+				dispatch(setList(lists.todos));
+				dispatch(setLoading(false));
 			} catch (err) {
 				console.error("Error fetching todo lists:", err);
-				setError("Failed to load the list of todos.");
+				dispatch(setLoading(false));
 			}
 		};
 
 		if (id) fetchTodoLists();
-	}, [id]);
+	}, [id, dispatch]);
 
 	return (
 		<div>
-			{error ? <p>{error}</p> : <TodosList id={id || ""} list={todoList} />}
+			{loading ? <p>Loading...</p> : <TodosList id={id || ""} list={list} />}
 		</div>
 	);
 };
