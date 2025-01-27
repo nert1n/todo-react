@@ -1,15 +1,15 @@
 <p align="center">
-  <img alt="<PROJECT NAME> logo" width="300px" src="./public/favicon.ico">
+  <img alt="TO-DO logo" width="300px" src="./public/favicon.ico">
 </p>
 
-<h1 align="center">//PROJECT NAME// - Frontend Web Application</h1>
+<h1 align="center">TO-DO - Frontend Web Application</h1>
 
 <p align="center">
-  //PROJECT NAME// is a feature-rich frontend application built using modern technologies like React, TypeScript, and Vite. It offers a fast and scalable platform for developers to collaborate and share coding knowledge.
+  TO-DO is a feature-rich frontend application built using modern technologies like React, TypeScript, and Vite. It offers a fast and scalable platform for developers to collaborate and share coding knowledge.
 </p>
 
 <p align="center">
-  <strong>Live demo:</strong> <a target="_blank" href="https://">Visit //PROJECT NAME//</a>
+  <strong>Live demo:</strong> <a target="_blank" href="https://">Visit TO-DO</a>
 </p>
 
 <p align="center">

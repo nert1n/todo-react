@@ -9,16 +9,18 @@ import sitemap from "vite-plugin-sitemap";
 export default defineConfig({
 	plugins: [
 		react(),
-		sitemap({ hostname: "https://" }),
+		sitemap({
+			hostname: "https://todo-react-git-dev-nert1ns-projects.vercel.app/",
+		}),
 		compression({ algorithm: "gzip" }),
 		legacy({ targets: ["defaults", "not IE 11"] }),
 		VitePWA({
 			registerType: "autoUpdate",
 			includeAssets: ["favicon.ico", "robots.txt"],
 			manifest: {
-				name: "Codersbud",
-				short_name: "Codersbud",
-				description: "Social network for programmers",
+				name: "To-do",
+				short_name: "To-do",
+				description: "To-do for peoples",
 				theme_color: "#ffffff",
 			},
 			workbox: {
