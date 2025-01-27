@@ -1,5 +1,6 @@
 import Layout from "@app/layout";
 import AuthProvider from "@app/layout/authProvider";
+import MainLayout from "@app/layout/mainLayout";
 import PrivateLayout from "@app/layout/privateLayout";
 import { authRoutes } from "@app/routes/auth-routes.tsx";
 import { privateRoutes } from "@app/routes/private-routes.tsx";
@@ -17,8 +18,13 @@ export const routes = [
 				children: authRoutes,
 			},
 			{
-				element: <PrivateLayout />,
-				children: privateRoutes,
+				element: <MainLayout />,
+				children: [
+					{
+						element: <PrivateLayout />,
+						children: privateRoutes,
+					},
+				],
 			},
 			{
 				path: "*",

@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 import { AuthService } from "@shared/api/auth.service.ts";
-import { Button } from "@shared/ui";
 
 export const ButtonExit = () => {
 	const navigate = useNavigate();
@@ -15,5 +14,9 @@ export const ButtonExit = () => {
 		}
 	};
 
-	return <Button onClick={handleLogout}>Logout</Button>;
+	return (
+		<button onClick={handleLogout}>
+			<img alt={"Exit"} src={"/icons/exit.svg"} />
+		</button>
+	);
 };
