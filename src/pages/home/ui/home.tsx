@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 import { Modal } from "@entities/modal/ui/modal.tsx";
+import { TodosService } from "@shared/api/todos.service.ts";
 import { Button, Input } from "@shared/ui";
-import { createTodoList } from "@shared/utils/create-todo-list.ts";
 import { deleteTodoList } from "@shared/utils/delete-todo-list.ts";
 import { getTodoLists } from "@shared/utils/get-todo-lists.ts";
 
@@ -36,7 +36,7 @@ export const Home = () => {
 	};
 
 	const handleCreateList = (title: string) => {
-		createTodoList(title);
+		TodosService.createTodoList(title);
 		setTodoLists(prevState => [...prevState]);
 		setIsUpdate(!isUpdate);
 		handleCloseModal();

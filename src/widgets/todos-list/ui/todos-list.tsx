@@ -6,8 +6,8 @@ import { useDispatch } from "react-redux";
 import { setIsUpdated } from "@app/store/slices/todo-lists-slice.tsx";
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { TodoElement } from "@features/todoElement/ui/todo-element.tsx";
+import { TodosService } from "@shared/api/todos.service.ts";
 import { Button, Input } from "@shared/ui";
-import { addTodoToList } from "@shared/utils/create-todo.ts";
 import { ITodosList } from "@widgets/todos-list/model/types.ts";
 
 type NewTaskInputs = {
@@ -54,7 +54,7 @@ export const TodosList = ({ id, list }: ITodosList) => {
 			listId: id,
 		};
 
-		addTodoToList(id, newTask);
+		TodosService.createTodo(id, newTask);
 
 		dispatch(setIsUpdated());
 
