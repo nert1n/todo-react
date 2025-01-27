@@ -7,7 +7,7 @@ import { Loader } from "@shared/ui/loader";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const { checkAccessToken, refreshAccessToken } = useAuth();
-	const [isAuthLoading, setIsAuthLoading] = useState<boolean>();
+	const [isAuthLoading, setIsAuthLoading] = useState(true);
 	const dispatch = useDispatch();
 
 	const authLogic = async () => {

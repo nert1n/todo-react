@@ -11,17 +11,21 @@ export const useAuth = () => {
 	const isPrivateRoute = privateRoutes.some(route =>
 		location.pathname.startsWith(route.path)
 	);
+
 	const setAuthenticatedState = (auth: boolean) => {
 		dispatch(setAuthenticated(auth));
 	};
 
-	const refreshAccessToken = async (): Promise<boolean> => {
+	const refreshAccessToken = async () => {
 		try {
-			const result = await AuthService.getAuthRefresh();
-			localStorage.setItem("access", result.data);
-			return true;
+			const user = await AuthService.refreshToken();
+			if (user) {
+				localStorage.setItem("isAuth", "true");
+				return true;
+			}
+			return false;
 		} catch (error) {
-			console.error("Refresh token is invalid:", error);
+			console.error("Failed to refresh token:", error);
 			if (isPrivateRoute) {
 				navigate("/");
 			}
@@ -29,12 +33,12 @@ export const useAuth = () => {
 		}
 	};
 
-	const checkAccessToken = async (): Promise<boolean> => {
+	const checkAccessToken = async () => {
 		try {
-			const res = await AuthService.getAuthMe();
-			return res.data === "OK";
+			const user = await AuthService.getCurrentUser();
+			return !!user;
 		} catch (error) {
-			console.error("Access token is invalid:", error);
+			console.error("Invalid access token:", error);
 			return false;
 		}
 	};

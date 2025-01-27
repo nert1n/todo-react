@@ -9,14 +9,4 @@ export default class MainService {
 		});
 		return { data: res.data, status: res.status, statusText: res.statusText };
 	}
-	static async postMain(main: string) {
-		const res = await axios.post(
-			`${BACKEND_URL}/main`,
-			{ main },
-			{
-				withCredentials: true,
-			}
-		);
-		return { data: res.data, status: res.status, statusText: res.statusText };
-	}
 }
