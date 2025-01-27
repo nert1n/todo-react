@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import legacy from "@vitejs/plugin-legacy";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -9,8 +10,9 @@ import sitemap from "vite-plugin-sitemap";
 export default defineConfig({
 	plugins: [
 		react(),
+		tailwindcss(),
 		sitemap({
-			hostname: "https://todo-react-git-dev-nert1ns-projects.vercel.app/",
+			hostname: "https://todo-react-eight-livid.vercel.app/",
 		}),
 		compression({ algorithm: "gzip" }),
 		legacy({ targets: ["defaults", "not IE 11"] }),

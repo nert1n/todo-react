@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <strong>Live demo:</strong> <a target="_blank" href="https://">Visit TO-DO</a>
+  <strong>Live demo:</strong> <a target="_blank" href="https://todo-react-eight-livid.vercel.app/">Visit TO-DO</a>
 </p>
 
 <p align="center">
