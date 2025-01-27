@@ -1,3 +1,9 @@
+import { Button } from "@shared/ui";
+
 export const Login = () => {
-	return <div>Login</div>;
+	return (
+		<div>
+			<Button>Login</Button>
+		</div>
+	);
 };
