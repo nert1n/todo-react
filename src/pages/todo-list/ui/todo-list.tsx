@@ -1,35 +1,28 @@
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { db } from "@app/index";
-import { mockTodoList } from "@shared/mock/mock-todo-list.ts";
+import { ITodoElement } from "@features/todoElement/model/types.ts";
+import { getTodoListWithTodos } from "@shared/utils/get-todo-lists-by-id.ts";
 import { TodosList } from "@widgets/todos-list/ui/todos-list.tsx";
 
 export const TodoList = () => {
 	const { id } = useParams<{ id: string }>();
+	const [todoList, setTodoList] = useState<ITodoElement[]>([]);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const getTodos = async () => {
-			const q = query(collection(db, "todos"), where("categoryId", "==", id));
-			const querySnapshot = await getDocs(q);
-			const todos: { id: string }[] = [];
-
-			querySnapshot.forEach(doc => {
-				const todo = { id: doc.id, ...doc.data() };
-				todos.push(todo);
-			});
-
-			console.log(todos);
+		const fetchTodoLists = async () => {
+			try {
+				const lists = await getTodoListWithTodos(id?.toString() || "");
+				setTodoList(lists.todos);
+			} catch (err) {
+				console.error("Error fetching todo lists:", err);
+				setError("Failed to load the list of todos.");
+			}
 		};
 
-		getTodos();
-	}, []);
+		if (id) fetchTodoLists();
+	}, [id]);
 
-	return (
-		<div>
-			<h1>TodoList page with ID: {id}</h1>
-			<TodosList list={mockTodoList} />
-		</div>
-	);
+	return <div>{error ? <p>{error}</p> : <TodosList list={todoList} />}</div>;
 };
