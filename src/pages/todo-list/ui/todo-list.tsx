@@ -22,9 +22,9 @@ export const TodoList = () => {
 				dispatch(setLoading(true));
 				const lists = await TodosService.getTodoList(id?.toString() || "");
 				dispatch(setList(lists.todos));
-				dispatch(setLoading(false));
 			} catch (err) {
 				console.error("Error fetching todo lists:", err);
+			} finally {
 				dispatch(setLoading(false));
 			}
 		};
