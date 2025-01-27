@@ -27,7 +27,7 @@ export const useAuth = () => {
 		} catch (error) {
 			console.error("Failed to refresh token:", error);
 			if (isPrivateRoute) {
-				navigate("/");
+				navigate("/sign-in");
 			}
 			return false;
 		}
