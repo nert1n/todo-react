@@ -1,8 +1,9 @@
 export interface ITodoElement {
-	id: string;
+	id?: string;
+	listId?: string;
 	title: string;
 	description: string;
-	createdBy: string;
-	editedBy: string;
-	completed: boolean;
+	createdBy?: string;
+	editedBy?: string;
+	completed?: boolean;
 }

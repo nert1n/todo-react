@@ -24,5 +24,9 @@ export const TodoList = () => {
 		if (id) fetchTodoLists();
 	}, [id]);
 
-	return <div>{error ? <p>{error}</p> : <TodosList list={todoList} />}</div>;
+	return (
+		<div>
+			{error ? <p>{error}</p> : <TodosList id={id || ""} list={todoList} />}
+		</div>
+	);
 };

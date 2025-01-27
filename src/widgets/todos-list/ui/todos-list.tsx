@@ -1,40 +1,116 @@
+import { getAuth } from "firebase/auth";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { TodoElement } from "@features/todoElement/ui/todo-element.tsx";
+import { Button, Input } from "@shared/ui";
+import { addTodoToList } from "@shared/utils/create-todo.ts";
 import { ITodosList } from "@widgets/todos-list/model/types.ts";
 
-export const TodosList = ({ list }: ITodosList) => {
-	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+type NewTaskInputs = {
+	title: string;
+	description: string;
+};
 
-	const handleAddTask = () => {
+export const TodosList = ({ id, list }: ITodosList) => {
+	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+	const {
+		formState: { errors },
+		handleSubmit,
+		register,
+		reset,
+	} = useForm<NewTaskInputs>();
+	const auth = getAuth();
+	const currentUser = auth.currentUser;
+
+	const handleOpenAddTaskModal = () => {
 		setIsAddModalOpen(true);
 	};
 
 	const handleCloseAddModal = () => {
 		setIsAddModalOpen(false);
+		reset();
+	};
+
+	const handleAddTask = (title: string, description: string) => {
+		if (!currentUser) {
+			console.error("User is not authenticated");
+			return;
+		}
+
+		const createdBy = currentUser.uid;
+		const editedBy = createdBy;
+
+		addTodoToList(id, {
+			title,
+			description,
+			createdBy,
+			editedBy,
+			completed: false,
+		});
+
+		handleCloseAddModal();
+	};
+
+	const onSubmit = (data: NewTaskInputs) => {
+		handleAddTask(data.title, data.description);
 	};
 
 	return (
-		<div className={"flex flex-col gap-2 w-full max-w-[600px] mx-auto"}>
-			{list.map((item, id) => (
+		<div className="flex flex-col gap-2 w-full max-w-[600px] mx-auto">
+			{!!list && (
+				<h1 className="w-full flex text-2xl justify-center">
+					Todo has not been created yet!
+				</h1>
+			)}
+			{list.map((item, index) => (
 				<TodoElement
-					key={Number(item.id) | id}
+					key={`${item.id}-${index}`}
 					completed={item.completed}
 					createdBy={item.createdBy}
 					description={item.description}
 					editedBy={item.editedBy}
 					id={item.id}
+					listId={id}
 					title={item.title}
 				/>
 			))}
 			<Modal
 				isOpen={isAddModalOpen}
-				title={"Add new task"}
+				title="Add new task"
 				onClose={handleCloseAddModal}>
-				1
+				<form
+					className="w-full flex flex-col gap-2"
+					onSubmit={handleSubmit(onSubmit)}>
+					<div className="flex flex-col gap-1">
+						<Input
+							placeholder="Title"
+							{...register("title", {
+								required: "Title is required",
+							})}
+						/>
+						{errors.title && (
+							<div className="text-red-500 text-sm">
+								{errors.title.message?.toString()}
+							</div>
+						)}
+						<Input
+							placeholder="Description"
+							{...register("description", {
+								required: "Description is required",
+							})}
+						/>
+						{errors.description && (
+							<div className="text-red-500 text-sm">
+								{errors.description.message?.toString()}
+							</div>
+						)}
+					</div>
+					<Button type="submit">Create new to-do</Button>
+				</form>
 			</Modal>
-			<button onClick={handleAddTask}>Add new task</button>
+			<Button onClick={handleOpenAddTaskModal}>Add new task</Button>
 		</div>
 	);
 };
