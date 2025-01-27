@@ -13,11 +13,13 @@ export interface TodoListElement {
 interface TodoListState {
 	list: TodoListElement[];
 	loading: boolean;
+	isUpdated: boolean;
 }
 
 const initialState: TodoListState = {
 	list: [],
 	loading: false,
+	isUpdated: false,
 };
 
 const todoListSlice = createSlice({
@@ -39,10 +41,22 @@ const todoListSlice = createSlice({
 		addTodo(state, action: PayloadAction<TodoListElement>) {
 			state.list.push(action.payload);
 		},
+		deleteTodo(state, action: PayloadAction<string>) {
+			state.list = state.list.filter(todo => todo.id !== action.payload);
+		},
+		setIsUpdated(state) {
+			state.isUpdated = !state.isUpdated;
+		},
 	},
 });
 
-export const { addTodo, setList, setLoading, updateTodo } =
-	todoListSlice.actions;
+export const {
+	addTodo,
+	deleteTodo,
+	setIsUpdated,
+	setList,
+	setLoading,
+	updateTodo,
+} = todoListSlice.actions;
 
 export default todoListSlice.reducer;

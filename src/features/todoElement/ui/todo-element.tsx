@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-import { updateTodo } from "@app/store/slices/todo-lists-slice.tsx";
+import { deleteTodo, updateTodo } from "@app/store/slices/todo-lists-slice.tsx";
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { ITodoElement } from "@features/todoElement/model/types.ts";
 import { Button, Input } from "@shared/ui";
@@ -55,6 +55,7 @@ export const TodoElement = ({
 	};
 
 	const handleDeleteTask = () => {
+		dispatch(deleteTodo(id || ""));
 		deleteTodoFromList(listId || "", id || "");
 		handleCloseModal();
 	};

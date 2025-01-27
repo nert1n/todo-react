@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-import { addTodo } from "@app/store/slices/todo-lists-slice.tsx";
+import { setIsUpdated } from "@app/store/slices/todo-lists-slice.tsx";
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { TodoElement } from "@features/todoElement/ui/todo-element.tsx";
 import { Button, Input } from "@shared/ui";
@@ -56,7 +56,7 @@ export const TodosList = ({ id, list }: ITodosList) => {
 
 		addTodoToList(id, newTask);
 
-		dispatch(addTodo(newTask));
+		dispatch(setIsUpdated());
 
 		handleCloseAddModal();
 	};
