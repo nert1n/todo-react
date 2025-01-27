@@ -15,6 +15,7 @@ type NewListInputs = {
 export const Home = () => {
 	const [isCreateNewListModalOpen, setIsCreateNewListModalOpen] =
 		useState(false);
+	const [isUpdate, setIsUpdate] = useState(false);
 
 	const {
 		formState: { errors },
@@ -37,10 +38,17 @@ export const Home = () => {
 	const handleCreateList = (title: string) => {
 		createTodoList(title);
 		setTodoLists(prevState => [...prevState]);
+		setIsUpdate(!isUpdate);
 		handleCloseModal();
 	};
 
+	const handleDeleteList = (id: string) => {
+		deleteTodoList(id);
+		setIsUpdate(!isUpdate);
+	};
+
 	const onSubmit = (data: NewListInputs) => {
+		setIsUpdate(!isUpdate);
 		handleCreateList(data.title);
 	};
 
@@ -54,7 +62,7 @@ export const Home = () => {
 			}
 		};
 		fetchTodoLists();
-	}, [todoLists]);
+	}, [isUpdate]);
 
 	return (
 		<div
@@ -75,7 +83,7 @@ export const Home = () => {
 						<Link to={`/list/${list.id}`}>{list.title}</Link>
 						<button
 							className={"text-red-500"}
-							onClick={() => deleteTodoList(list.id)}>
+							onClick={() => handleDeleteList(list.id)}>
 							X
 						</button>
 					</div>
