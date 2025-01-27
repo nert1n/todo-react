@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Modal } from "@entities/modal/ui/modal.tsx";
 import { Button, Input } from "@shared/ui";
 import { createTodoList } from "@shared/utils/create-todo-list.ts";
+import { deleteTodoList } from "@shared/utils/delete-todo-list.ts";
 import { getTodoLists } from "@shared/utils/get-todo-lists.ts";
 
 type NewListInputs = {
@@ -66,12 +67,18 @@ export const Home = () => {
 					"flex flex-row justify-start flex-wrap mx-auto w-full max-w-[600px] bg-white h-full rounded-2xl p-4 gap-2"
 				}>
 				{todoLists.map((list, id) => (
-					<Link
+					<div
 						key={Number(list.id) | id}
-						className={"bg-amber-100 w-max p-3 rounded-2xl hover:bg-amber-200"}
-						to={`/list/${list.id}`}>
-						{list.title}
-					</Link>
+						className={
+							"flex flex-row gap-2 bg-amber-100 w-max p-3 rounded-2xl hover:bg-amber-200"
+						}>
+						<Link to={`/list/${list.id}`}>{list.title}</Link>
+						<button
+							className={"text-red-500"}
+							onClick={() => deleteTodoList(list.id)}>
+							X
+						</button>
+					</div>
 				))}
 			</ul>
 			<Modal
