@@ -8,6 +8,7 @@ import { deleteTodoFromList } from "@shared/utils/delete-todo.ts";
 import { updateTodoInList } from "@shared/utils/update-todo.ts";
 
 export const TodoElement = ({
+	completed,
 	description,
 	id,
 	listId,
@@ -61,6 +62,14 @@ export const TodoElement = ({
 	}) => {
 		updateTodoInList(listId || "", id || "", data);
 		handleCloseModal();
+	};
+
+	const handleEditCheckbox = () => {
+		updateTodoInList(listId || "", id || "", {
+			title,
+			description,
+			completed: !completed,
+		});
 	};
 
 	return (
@@ -134,7 +143,11 @@ export const TodoElement = ({
 				<button className={"text-[#F44141]"} onClick={handleOpenDeleting}>
 					delete
 				</button>
-				<input type="checkbox" />
+				<input
+					checked={completed}
+					type="checkbox"
+					onChange={() => handleEditCheckbox()}
+				/>
 			</div>
 		</div>
 	);
