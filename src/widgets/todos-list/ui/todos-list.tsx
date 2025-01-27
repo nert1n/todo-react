@@ -19,11 +19,12 @@ export const TodosList = ({ list }: ITodosList) => {
 		<div className={"flex flex-col gap-2 w-full max-w-[600px] mx-auto"}>
 			{list.map((item, id) => (
 				<TodoElement
-					key={Number(item.createdBy) | id}
+					key={Number(item.id) | id}
 					completed={item.completed}
 					createdBy={item.createdBy}
 					description={item.description}
 					editedBy={item.editedBy}
+					id={item.id}
 					title={item.title}
 				/>
 			))}
