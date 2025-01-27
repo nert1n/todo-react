@@ -1,7 +1,7 @@
 import Layout from "@app/layout";
 import PrivateLayout from "@app/layout/privateLayout";
+import { privateRoutes } from "@app/routes/private-routes.tsx";
 import { ErrorPage } from "@pages/error";
-import { HomePage } from "@pages/home";
 import { LoginPage } from "@pages/login";
 import { NotFoundPage } from "@pages/not-found";
 import { RegisterPage } from "@pages/register";
@@ -22,12 +22,7 @@ export const routes = [
 			},
 			{
 				element: <PrivateLayout />,
-				children: [
-					{
-						path: "",
-						element: <HomePage />,
-					},
-				],
+				children: privateRoutes,
 			},
 			{
 				path: "*",
